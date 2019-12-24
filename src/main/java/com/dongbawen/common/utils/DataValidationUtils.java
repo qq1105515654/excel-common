@@ -1,5 +1,6 @@
 package com.dongbawen.common.utils;
 
+import com.dongbawen.common.annotation.Excel;
 import com.dongbawen.common.annotation.ExcelTarget;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +24,7 @@ public class DataValidationUtils {
 
 
     /**
-     * 校验该Excel表格格式是否跟实体类的格式一致
+     * 校验该Excel表格格式是否跟实体类的格式一致,并且检验必填项是否填写
      * @param sheet
      * @param clazz
      * @return
@@ -74,6 +75,19 @@ public class DataValidationUtils {
     public static Object getEntitySheetName(Class clz){
         Annotation annotation=clz.getAnnotation(ExcelTarget.class);
         return AnnotationUtils.getAnnotationValue(annotation,"sheetName");
+    }
+
+    /**
+     * 检查字段是否为必填项
+     * @param field
+     * @return
+     */
+    public static boolean checkFieldIsRequired(Field field){
+        if(!field.isAnnotationPresent(Excel.class)){
+            return false;
+        }
+        Annotation annotation=field.getAnnotation(Excel.class);
+        return (boolean) AnnotationUtils.getAnnotationValue(annotation,"isRequired");
     }
 
 }

@@ -40,6 +40,12 @@ public @interface Excel {
     boolean isSharedField() default false;
 
     /**
+     * 这个属性用于标识在这个属性为共享字段时，必须要填写另外一个对象的类型反射
+     * @return
+     */
+    Class shareFieldClass() default Object.class;
+
+    /**
      * 该字段是否为必填项
      * @return
      * @default true

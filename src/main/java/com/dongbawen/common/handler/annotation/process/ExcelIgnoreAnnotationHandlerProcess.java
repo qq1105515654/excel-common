@@ -4,6 +4,8 @@ import com.dongbawen.common.annotation.ExcelIgnore;
 import com.dongbawen.common.handler.annotation.AbstractAnnotationHandler;
 import com.dongbawen.common.utils.ObjectUtils;
 
+import java.lang.reflect.Field;
+
 /**
  * @author snh
  * @version 1.0
@@ -18,7 +20,8 @@ public class ExcelIgnoreAnnotationHandlerProcess<T,A> extends AbstractAnnotation
 
     @Override
     public ExcelIgnore getAnnotation(T t, Class<ExcelIgnore> a) {
-        this.ignore=super.getAnnotation(t,a);
+        Field field= (Field) t;
+        this.ignore=field.getAnnotation(a);
         return this.ignore;
     }
 

@@ -4,6 +4,8 @@ import com.dongbawen.common.annotation.ExcelCollections;
 import com.dongbawen.common.handler.annotation.AbstractAnnotationHandler;
 import com.dongbawen.common.utils.ObjectUtils;
 
+import java.lang.reflect.Field;
+
 /**
  * @author snh
  * @version 1.0
@@ -17,7 +19,8 @@ public class ExcelRelationAnnotationHandlerProcess<T,A> extends AbstractAnnotati
 
     @Override
     public ExcelCollections getAnnotation(T t, Class<ExcelCollections> a) {
-        this.collections=super.getAnnotation(t,a);
+        Field field= (Field) t;
+        this.collections=field.getAnnotation(a);
         return this.collections;
     }
 

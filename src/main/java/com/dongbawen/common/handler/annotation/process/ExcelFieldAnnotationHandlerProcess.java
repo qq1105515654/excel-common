@@ -4,6 +4,7 @@ import com.dongbawen.common.annotation.Excel;
 import com.dongbawen.common.handler.annotation.AbstractAnnotationHandler;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 
 /**
  * @author snh
@@ -19,9 +20,9 @@ public class ExcelFieldAnnotationHandlerProcess<T,A extends Annotation> extends 
 
     @Override
     public Excel getAnnotation(T t, Class<Excel> a) {
-        Excel annotation=super.getAnnotation(t,a);
-        this.excelAnnotation=annotation;
-        return annotation;
+        Field field= (Field) t;
+        this.excelAnnotation=field.getAnnotation(a);
+        return excelAnnotation;
     }
 
     public String getName(){

@@ -1,13 +1,51 @@
 package com.dongbawen.common;
 
-import org.junit.jupiter.api.Test;
+import com.dongbawen.common.entity.DrugBaseInfo;
+import com.dongbawen.common.entity.DrugInstructionsInfo;
+import com.dongbawen.common.handler.imported.ImportHandler;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
-class CommonApplicationTests {
+@RunWith(SpringRunner.class)
+public class CommonApplicationTests {
+
+    @Autowired
+    ImportHandler importHandler;
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
+
     }
 
+
+    @Test
+    public void test(){
+        long startTime=System.currentTimeMillis();
+
+        File file=new File("F:\\WorkWorld\\HE系统\\药品信息.xlsx");
+        try {
+            InputStream is=new FileInputStream(file);
+            MultipartFile multipartFile=new MockMultipartFile(file.getName(),is);
+            Map<String, List> result=importHandler.importDataHandler(multipartFile, DrugBaseInfo.class, DrugInstructionsInfo.class);
+            long endTime=System.currentTimeMillis();
+
+            System.out.println(result);
+            System.out.println();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

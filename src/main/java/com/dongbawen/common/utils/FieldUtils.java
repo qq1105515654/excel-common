@@ -2,12 +2,14 @@ package com.dongbawen.common.utils;
 
 import com.dongbawen.common.annotation.Excel;
 import com.dongbawen.common.annotation.ExcelCollections;
+import com.dongbawen.common.annotation.ExcelEntity;
 import com.dongbawen.common.annotation.ExcelIgnore;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -26,8 +28,7 @@ public class FieldUtils {
      */
     public static List<Field> getEndField(Class clazz){
         List<Field> fields=ClassUtils.getFields(clazz);
-        fields=removeIgnoreField(fields);
-        fields=removeCollectionField(fields);
+        removeIgnoreField(fields);
         return fields;
     }
 
@@ -46,35 +47,18 @@ public class FieldUtils {
         return collection;
     }
 
-    /**
-     * 删除实体对象中属性集合中一对多的属性，保留单元格属性
-     * @param fields
-     * @return
-     */
-    public static List<Field> removeCollectionField(List<Field> fields){
-        List<Field> newFields=new ArrayList<>();
-        fields.forEach(field -> {
-            if(field.isAnnotationPresent(Excel.class)){
-                newFields.add(field);
-            }
-        });
-        return newFields;
-    }
-
-    /**
-     * 删除忽略的实体属性
-     * @param fields
-     * @return
-     */
     public static List<Field> removeIgnoreField(List<Field> fields){
-        List<Field> newFields=new ArrayList<>();
-        fields.forEach(field -> {
-            if(field.isAnnotationPresent(ExcelIgnore.class)){
-                fields.remove(field);
+        Iterator<Field> iterator=fields.iterator();
+        while(iterator.hasNext()){
+            Field field=iterator.next();
+            if(field.isAnnotationPresent(ExcelEntity.class)
+                    ||field.isAnnotationPresent(ExcelCollections.class)
+                    ||field.isAnnotationPresent(ExcelIgnore.class)
+                    ||field.getAnnotation(Excel.class)==null){
+                iterator.remove();
             }
-        });
-        newFields=fields;
-        return newFields;
+        }
+        return fields;
     }
 
     /**
@@ -86,6 +70,9 @@ public class FieldUtils {
      */
     public static Field matchField(List<Field> fields,String title,int index){
         for (Field field : fields) {
+            if(!field.isAnnotationPresent(Excel.class)){
+                return null;
+            }
             Annotation annotation=field.getAnnotation(Excel.class);
             String fieldTitle= (String) AnnotationUtils.getAnnotationValue(annotation,"name");
             int fieldIndex= (int) AnnotationUtils.getAnnotationValue(annotation,"index");

@@ -99,26 +99,6 @@ public class AnnotationUtils {
     }
 
     /**
-     * 匹配 ExcelImport 注解
-     * @param obj
-     * @param <T>
-     * @return
-     */
-    public static <T> boolean matchExcelImport(Class<T> obj){
-        return matchAnnotation(obj, ExcelImport.class);
-    }
-
-    /**
-     * 匹配 ExcelExport 注解
-     * @param obj
-     * @param <T>
-     * @return
-     */
-    public static <T> boolean matchExcelExport(Class<T> obj){
-        return matchAnnotation(obj,ExcelExport.class);
-    }
-
-    /**
      * 匹配对象中的注解
      * @param obj   源对象
      * @param annotationClass 注解反射
@@ -136,7 +116,7 @@ public class AnnotationUtils {
     }
 
     /**
-     *
+     * 判断该字段是否为必须要填写的
      * @param field
      * @param property
      * @return

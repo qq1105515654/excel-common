@@ -1,15 +1,17 @@
 package com.dongbawen.common.utils;
 
-import com.dongbawen.common.annotation.ExcelTarget;
 import com.dongbawen.common.entity.Student;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author snh
@@ -61,7 +63,8 @@ public class ClassUtils {
      * @return
      */
     public static List<Field> getFields(Class originClass){
-        return Arrays.asList(originClass.getFields());
+        Field[] fields=originClass.getDeclaredFields();
+        return new ArrayList<>(Arrays.asList(fields));
     }
 
     /**
@@ -80,6 +83,27 @@ public class ClassUtils {
         return method.invoke(originObj);
     }
 
+    /**
+     * 将一行数据解析为实体类
+     * @param clz   实体类反射
+     * @param map    去除忽略跟集合一对一，一对多关系之后的属性集合
+     * @param row  一行数据
+     * @param <T>
+     * @return
+     */
+    public static <T>Object parseToEntity(Class<T> clz, Map<Integer,Field> map, Row row) throws IllegalAccessException, InstantiationException {
+        T t=clz.newInstance();
+        for (int i = 0; i < row.getLastCellNum(); i++) {
+            Field field=map.get(i);
+            Cell cell=row.getCell(i);
+            String value=cell.getStringCellValue();
+            if(DataValidationUtils.checkFieldIsRequired(field) && StringUtils.isNotEmpty(value)){
+                field.setAccessible(true);
+                field.set(t,value);
+            }
+        }
+        return t;
+    }
 
     public static void main(String[] args){
        Student student=new Student();

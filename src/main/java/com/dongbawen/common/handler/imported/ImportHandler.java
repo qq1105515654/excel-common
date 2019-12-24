@@ -3,6 +3,7 @@ package com.dongbawen.common.handler.imported;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author snh
@@ -11,13 +12,13 @@ import java.util.List;
  * @description TODO Excel 导入数据处理接口
  * @date 2019/11/11 17:32
  **/
-public interface ImportHandler<T> {
+public interface ImportHandler {
 
     /**
      *  Excel 导入数据处理
-     * @param c
+     * @param excelTargetClass
      * @param file
-     * @return
+     * @return 返回 {sheetName:List}格式的键值对数据
      */
-    public List<T> importDataHandler(Class<T> c, MultipartFile file);
+    public Map<String,List> importDataHandler(MultipartFile file,Class ... excelTargetClass);
 }
