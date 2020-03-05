@@ -1,7 +1,6 @@
 package com.dongbawen.common;
 
-import com.dongbawen.common.entity.DrugBaseInfo;
-import com.dongbawen.common.entity.DrugInstructionsInfo;
+import com.dongbawen.common.entity.Food;
 import com.dongbawen.common.handler.imported.ImportHandler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,15 +34,15 @@ public class CommonApplicationTests {
     public void test(){
         long startTime=System.currentTimeMillis();
 
-        File file=new File("F:\\WorkWorld\\HE系统\\药品信息.xlsx");
+        File file=new File("F:\\WorkWorld\\运动处方\\中国食物成分表1.0-20200228.xlsx");
         try {
             InputStream is=new FileInputStream(file);
             MultipartFile multipartFile=new MockMultipartFile(file.getName(),is);
-            Map<String, List> result=importHandler.importDataHandler(multipartFile, DrugBaseInfo.class, DrugInstructionsInfo.class);
+            Map<String, List> result=importHandler.importDataHandler(multipartFile, Food.class);
             long endTime=System.currentTimeMillis();
 
             System.out.println(result);
-            System.out.println();
+            System.out.println("总共耗时："+(endTime-startTime)+"/ms");
         } catch (IOException e) {
             e.printStackTrace();
         }

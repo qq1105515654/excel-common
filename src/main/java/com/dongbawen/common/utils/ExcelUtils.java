@@ -3,7 +3,9 @@ package com.dongbawen.common.utils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dongbawen.common.annotation.Excel;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -34,12 +36,13 @@ public class ExcelUtils {
      * @param workbook
      * @return
      */
-    public Map<String, JSONArray> excelToMap(Workbook workbook){
+    public Map<String, JSONArray> excelToMap(Workbook workbook,String sheetName){
         Map<String,JSONArray> map=new HashMap<>(1);
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
             Sheet sheet=workbook.getSheetAt(i);
-            String sheetName=sheet.getSheetName();
-            map.put(sheetName,sheetToJSONArray(sheet));
+            if(sheetName.equals(sheet.getSheetName())){
+                map.put(sheetName,sheetToJSONArray(sheet));
+            }
         }
         return map;
     }
@@ -50,11 +53,16 @@ public class ExcelUtils {
         JSONArray jsonArray=new JSONArray();
         //取出第一行作为key
         Row keyRow=sheet.getRow(0);
+        DataFormatter formatter=new DataFormatter();
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
             Row valueRow=sheet.getRow(i);
             JSONObject object=new JSONObject();
             for (int j = 0; j < valueRow.getLastCellNum(); j++) {
-                object.put(keyRow.getCell(j).getStringCellValue(),valueRow.getCell(j).getStringCellValue());
+                String value=formatter.formatCellValue(valueRow.getCell(j));
+                if(StringUtils.isEmpty(value)){
+                    value="";
+                }
+                object.put(keyRow.getCell(j).getStringCellValue(), value);
             }
             jsonArray.add(object);
         }

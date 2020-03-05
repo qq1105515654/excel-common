@@ -40,22 +40,25 @@ public class ImportHandlerProcess extends AbstractImportHandler {
         Map<String,List> result=new HashMap<>(0);
         Workbook workbook=checkFileType(file);
         Map<String,Class> map=EntityMappingUtils.getMapping(excelTargetClass);
-        Map<String, JSONArray> jsonArrayMap=excelUtils.excelToMap(workbook);
-        for (String key : jsonArrayMap.keySet()) {
-            JSONArray jsonArray=jsonArrayMap.get(key);
-            Class entityClass=map.get(key);
-            if(entityClass==null){
-                continue;
-            }
-            try {
-                result.put(key,excelUtils.jsonArrayToList(entityClass,jsonArray));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            }
+        for (String sheetName : map.keySet()) {
+            Map<String, JSONArray> jsonArrayMap=excelUtils.excelToMap(workbook,sheetName);
+            for (String key : jsonArrayMap.keySet()) {
+                JSONArray jsonArray=jsonArrayMap.get(key);
+                Class entityClass=map.get(key);
+                if(entityClass==null){
+                    continue;
+                }
+                try {
+                    result.put(key,excelUtils.jsonArrayToList(entityClass,jsonArray));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
 
+            }
         }
+
         return result;
     }
 
