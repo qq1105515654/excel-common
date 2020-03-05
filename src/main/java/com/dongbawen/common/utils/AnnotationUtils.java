@@ -127,10 +127,10 @@ public class AnnotationUtils {
     }
 
 
-    public static void main(String[] args) {
-        /*Student student=new Student();
+   /* public static void main(String[] args) {
+        *//*Student student=new Student();
         Class clz=student.getClass();
         Annotation annotation=clz.getAnnotation(ExcelTarget.class);
-        System.out.println(getAnnotationValue(annotation,"sheetName"));*/
-    }
+        System.out.println(getAnnotationValue(annotation,"sheetName"));*//*
+    }*/
 }

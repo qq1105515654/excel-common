@@ -1,6 +1,5 @@
 package com.dongbawen.common.utils;
 
-import com.dongbawen.common.test.Student;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -105,9 +104,9 @@ public class ClassUtils {
         return t;
     }
 
-    public static void main(String[] args){
+   /* public static void main(String[] args){
        Student student=new Student();
        setFieldsValue(student,"name","成吉思汗");
        System.out.println(student.getName());
-    }
+    }*/
 }
