@@ -1,7 +1,5 @@
 package com.dongbawen.common.utils;
 
-import com.dongbawen.common.entity.Student;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 

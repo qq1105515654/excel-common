@@ -1,4 +1,4 @@
-package com.dongbawen.common.entity;
+package com.dongbawen.common.test;
 
 import com.dongbawen.common.annotation.Excel;
 import com.dongbawen.common.annotation.ExcelIgnore;

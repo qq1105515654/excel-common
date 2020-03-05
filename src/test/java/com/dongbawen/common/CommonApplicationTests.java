@@ -1,6 +1,5 @@
 package com.dongbawen.common;
 
-import com.dongbawen.common.entity.Food;
 import com.dongbawen.common.handler.imported.ImportHandler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +37,7 @@ public class CommonApplicationTests {
         try {
             InputStream is=new FileInputStream(file);
             MultipartFile multipartFile=new MockMultipartFile(file.getName(),is);
-            Map<String, List> result=importHandler.importDataHandler(multipartFile, Food.class);
+            Map<String, List> result=importHandler.importDataHandler(multipartFile);
             long endTime=System.currentTimeMillis();
 
             System.out.println(result);
